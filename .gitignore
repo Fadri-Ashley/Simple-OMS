@@ -1,0 +1,32 @@
+# Python
+__pycache__/
+*.pyc
+*.pyd
+*.pyo
+*.egg-info/
+.Python
+.venv/
+venv/
+env/
+# Environments can have various names
+*/venv/
+*/env/
+
+# Django-specific
+*.sqlite3
+db.sqlite
+media/ # User-uploaded media files (optional, depends on deployment strategy)
+static/ # Generated static files (optional, can be generated on deployment)
+.env # Environment variables file (contains sensitive info/secrets)
+
+# IDE-specific
+.idea/ # PyCharm
+.vscode/ # VS Code (optional, if you have user-specific settings)
+
+# OS-specific
+.DS_Store # macOS
+Thumbs.db # Windows
+
+# Testing/Coverage
+htmlcov/
+.coverage
