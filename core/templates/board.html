@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Simple Kanban</title>
+    <style>
+        .board { display: flex; gap: 20px; }
+        .column {
+            width: 30%;
+            padding: 10px;
+            background: #f4f4f4;
+            border-radius: 8px;
+        }
+        .task {
+            background: white;
+            padding: 8px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Simple Kanban Board</h1>
+
+    <div class="board">
+        <div class="column">
+            <h3>To Do</h3>
+            {% for task in todo %}
+                <div class="task">{{ task.task_name }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="column">
+            <h3>In Progress</h3>
+            {% for task in progress %}
+                <div class="task">{{ task.task_name }}</div>
+            {% endfor %}
+        </div>
+
+        <div class="column">
+            <h3>Done</h3>
+            {% for task in done %}
+                <div class="task">{{ task.task_name }}</div>
+            {% endfor %}
+        </div>
+    </div>
+</body>
+</html>
