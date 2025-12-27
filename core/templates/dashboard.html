@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Simple OMS</title>
+    </head>
+    <body>
+        <h1>Simple Organization Management System</h1>
+        <a href="{% url 'board' %}">Kanban</a>
+        <a href="#">Member</a>
+        <p>Hi, {{ user.username }}!</p>
+        <form method="post" action="{% url 'logout' %}">
+            {% csrf_token %}
+            <button type="submit">Log Out</button>
+        </form>
+    </body>
+</html>
