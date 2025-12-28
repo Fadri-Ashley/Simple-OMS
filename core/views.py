@@ -16,13 +16,13 @@ def login_page(request):
 
         if not User.objects.filter(username=username).exists():
             messages.error(request, 'Invalid Username')
-            return redirect('/login/')
+            return redirect('login')
 
         user = authenticate(username=username, password=password)
 
         if user is None:
             messages.error(request, "Invalid Password")
-            return redirect('/login/')
+            return redirect('login')
         else:
             login(request, user)
             return redirect('/')
@@ -30,32 +30,36 @@ def login_page(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('/login/')
+    return redirect('login')
 
 def register_page(request):
     if request.method == 'POST':
         first_name = request.POST.get('first_name')
         last_name = request.POST.get('last_name')
         username = request.POST.get('username')
+        email = request.POST.get('email')
         password = request.POST.get('password')
 
-        user = User.objects.filter(username=username)
-
-        if user.exists():
+        if User.objects.filter(username=username).exists():
             messages.info(request, "Username already taken!")
-            return redirect('/register/')
+            return redirect('register')
+        
+        if User.objects.filter(email=email).exists():
+            messages.info(request, "Email already taken!")
+            return redirect('register')
 
         user = User.objects.create_user(
             first_name=first_name,
             last_name=last_name,
-            username=username
+            username=username,
+            email=email,
         )
 
         user.set_password(password)
         user.save()
 
         messages.info(request, "Account created successfully!")
-        return redirect('/register/')
+        return redirect('login')
 
     return render(request, 'register.html')
 

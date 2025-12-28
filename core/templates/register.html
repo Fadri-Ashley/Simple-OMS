@@ -44,6 +44,14 @@
             <div class="form-group">
                 <label for="exampleInputEmail1">Username</label>
                 <input type="text" class="form-control" name="username" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" placeholder="Enter username" required>
+            </div>
+
+
+            <!-- Email input field -->
+            <div class="form-group">
+                <label for="exampleInputEmail1">Email</label>
+                <input type="text" class="form-control" name="email" id="exampleInputEmail1"
                     aria-describedby="emailHelp" placeholder="Enter email" required>
             </div>
 
@@ -55,7 +63,7 @@
             </div>
 
             <!-- Link to login page for users who already have an account -->
-            <p>Already have an account <a href="/login/">Login</a> </p>
+            <p>Already have an account <a href="{% url 'login' %}">Login</a> </p>
 
             <!-- Submit button -->
             <button type="submit" class="btn btn-primary">Submit</button>

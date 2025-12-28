@@ -6,5 +6,5 @@ urlpatterns = [
     path('kanban/', views.board, name='board'),
     path('login/', views.login_page, name='login'),
     path('logout/', views.logout_view, name='logout'),
-    path('register/', views.register_page, name='register_page'),
+    path('register/', views.register_page, name='register'),
 ]
