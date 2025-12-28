@@ -69,7 +69,7 @@ def dashboard(request):
     return render(request, 'dashboard.html')
 
 # Kanban
-
+@login_required
 def board(request):
     todo = Task.objects.filter(status='todo')
     progress = Task.objects.filter(status='progress')
