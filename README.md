@@ -1,8 +1,9 @@
 # Simple Organization Management System
 ## To Do List
-- [x] Database design
-- [x] API
-- [x] Auth
+- [ ] Functional app
+- [ ] Database design
+- [ ] API
+- [ ] Auth
 - [ ] Throttling
 - [ ] Pagination
 - [ ] Filtering
