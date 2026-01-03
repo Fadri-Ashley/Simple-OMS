@@ -1,16 +1,114 @@
 <!DOCTYPE html>
-<html>
-    <head>
-        <title>Simple OMS</title>
-    </head>
-    <body>
-        <h1>Simple Organization Management System</h1>
-        <a href="{% url 'board' %}">Kanban</a>
-        <a href="#">Member</a>
-        <p>Hi, {{ user.email }}!</p>
-        <form method="post" action="{% url 'logout' %}">
-            {% csrf_token %}
-            <button type="submit">Log Out</button>
-        </form>
-    </body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard | Simple OMS</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background-color: #f4f6f8;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar */
+        .sidebar {
+            width: 220px;
+            background-color: #1f2933;
+            color: #fff;
+            padding: 20px;
+        }
+
+        .sidebar h2 {
+            margin-bottom: 30px;
+            font-size: 20px;
+            text-align: center;
+        }
+
+        .sidebar a {
+            display: block;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 15px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+
+        .sidebar a:hover {
+            background-color: #374151;
+        }
+
+        /* Main content */
+        .main {
+            flex: 1;
+            padding: 30px;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+        }
+
+        .logout-btn {
+            background-color: #ef4444;
+            border: none;
+            color: white;
+            padding: 8px 14px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: #dc2626;
+        }
+
+        .card {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+        <h2>Simple OMS</h2>
+        <a href="{% url 'dashboard' %}">Dashboard</a>
+        <a href="{% url 'board' %}">Kanban Board</a>
+        <a href="#">Member List</a>
+        <!-- fitur baru tinggal nambah link -->
+    </div>
+
+    <!-- Main Content -->
+    <div class="main">
+        <div class="header">
+            <h1>Dashboard</h1>
+            <form method="post" action="{% url 'logout' %}">
+                {% csrf_token %}
+                <button type="submit" class="logout-btn">Logout</button>
+            </form>
+        </div>
+
+        <div class="card">
+            <h3>Welcome 👋</h3>
+            <p>Hi, <strong>{{ user.email }}</strong></p>
+            <p>Selamat datang di Simple Organization Management System.</p>
+        </div>
+    </div>
+
+</body>
 </html>
