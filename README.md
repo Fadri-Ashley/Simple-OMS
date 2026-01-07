@@ -1,9 +1,9 @@
 # Simple Organization Management System
 ## To Do List Functional App
-- [ ] Dashboard
-- [ ] Roles (Admin & Crew)
-- [ ] Kanban (Drag & Drop, CRUD, Crew responsible)
-- [ ] Crew list
+- [x] Dashboard
+- [ ] Roles 
+- [x] Kanban
+- [x] Crew list
 
 ## To Do List Assignment
 - [ ] Functional app

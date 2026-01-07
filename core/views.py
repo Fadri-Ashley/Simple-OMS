@@ -7,6 +7,7 @@ from django.http import HttpResponse
 from django.template import loader 
 from .models import Task 
 from django.http import JsonResponse
+from django.contrib.auth import get_user_model
 
 # Auth
 
@@ -83,7 +84,6 @@ def board(request):
     })
 
 @login_required
-
 def update_status_ajax(request):
     if request.method == "POST":
         task_id = request.POST.get("task_id")
@@ -94,3 +94,15 @@ def update_status_ajax(request):
         task.save()
 
         return JsonResponse({"success": True})
+    
+@login_required
+def user_list_view(request):
+    # Retrieve all user objects from the database
+    User = get_user_model()
+    users = User.objects.all().order_by('last_name', 'first_name') # Optional: order the list
+
+    # Pass the user list to the template context
+    context = {
+        'users': users
+    }
+    return render(request, 'crew_list.html', context)

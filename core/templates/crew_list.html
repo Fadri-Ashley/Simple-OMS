@@ -1,0 +1,22 @@
+<!-- your_app/templates/your_app/user_list.html -->
+<!DOCTYPE html>
+<html>
+<head>
+    <title>User List</title>
+</head>
+<body>
+    <a href="{% url 'dashboard' %}" class="back">Dashboard</a>
+    <h1>Crew List</h1>
+    <ul>
+        <!-- Loop through the users passed from the view -->
+        {% for user in users %}
+            <li>
+                <!-- Display user details -->
+                {{ user.get_full_name|default:user.username }} ({{ user.email }})
+            </li>
+        {% empty %}
+            <li>No users found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
