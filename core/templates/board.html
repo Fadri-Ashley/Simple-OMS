@@ -109,9 +109,6 @@
                     data-name="{{ task.task_name }}"
                     data-desc="{{ task.task_desc|escape }}">
                     <p>{{ task.task_name }}</p>
-                    <button onclick="updateStatus({{ task.id }}, 'todo')">To Do</button>
-                    <button onclick="updateStatus({{ task.id }}, 'progress')">Progress</button>
-                    <button onclick="updateStatus({{ task.id }}, 'done')">Done</button>
                 </div>
             {% empty %}
                 <p>No tasks</p>
@@ -126,9 +123,6 @@
                     data-name="{{ task.task_name }}"
                     data-desc="{{ task.task_desc|escape }}">
                     <p>{{ task.task_name }}</p>
-                    <button onclick="updateStatus({{ task.id }}, 'todo')">To Do</button>
-                    <button onclick="updateStatus({{ task.id }}, 'progress')">Progress</button>
-                    <button onclick="updateStatus({{ task.id }}, 'done')">Done</button>
                 </div>
             {% empty %}
                 <p>No tasks</p>
@@ -143,9 +137,6 @@
                     data-name="{{ task.task_name }}"
                     data-desc="{{ task.task_desc|escape }}">
                     <p>{{ task.task_name }}</p>
-                    <button onclick="updateStatus({{ task.id }}, 'todo')">To Do</button>
-                    <button onclick="updateStatus({{ task.id }}, 'progress')">Progress</button>
-                    <button onclick="updateStatus({{ task.id }}, 'done')">Done</button>
                 </div>
             {% empty %}
                 <p>No tasks</p>
@@ -155,52 +146,68 @@
     </div>
 
     <div id="taskModal" class="modal">
-        <div class="modal-content">
+        <div class="modal-content" >
             <span class="close">&times;</span>
             <h2 id="modalTitle"></h2>
             <p id="modalDesc"></p>
+            <form id="statusForm">
+                <input type="hidden" id="taskId">
+
+                <label>Status</label>
+                <select id="taskStatus">
+                    <option value="todo">To Do</option>
+                    <option value="progress">In Progress</option>
+                    <option value="done">Done</option>
+                </select>
+
+                <button type="submit">Update Status</button>
+            </form>
         </div>
     </div>
 
 </body>
 
 <script>
-function updateStatus(taskId, status) {
-    fetch("{% url 'update_status_ajax' %}", {
-        method: "POST",
-        headers: {
-            "X-CSRFToken": "{{ csrf_token }}",
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `task_id=${taskId}&status=${status}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            location.reload(); // atau pindahkan DOM element
-        }
-    });
-}
-
 const modal = document.getElementById("taskModal");
 const modalTitle = document.getElementById("modalTitle");
 const modalDesc = document.getElementById("modalDesc");
+const taskIdInput = document.getElementById("taskId");
+const statusSelect = document.getElementById("taskStatus");
 const closeBtn = document.querySelector(".close");
 
 document.querySelectorAll(".task").forEach(task => {
     task.addEventListener("click", () => {
         modalTitle.innerText = task.dataset.name;
         modalDesc.innerText = task.dataset.desc || "No description";
+        taskIdInput.value = task.dataset.id;
+        statusSelect.value = task.dataset.status;
         modal.style.display = "block";
     });
 });
 
 closeBtn.onclick = () => modal.style.display = "none";
 
+document.getElementById("statusForm").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    fetch("{% url 'update_status_ajax' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `task_id=${taskIdInput.value}&status=${statusSelect.value}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            location.reload();
+        }
+    });
+});
+
 window.onclick = (e) => {
-    if (e.target === modal) {
-        modal.style.display = "none";
-    }
+    if (e.target === modal) modal.style.display = "none";
 };
 </script>
 </html>
