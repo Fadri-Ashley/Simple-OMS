@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import HttpResponse
 from django.template import loader 
 from .models import Task 
+from django.http import JsonResponse
 
 # Auth
 
@@ -80,3 +81,16 @@ def board(request):
         'progress': progress,
         'done': done,
     })
+
+@login_required
+
+def update_status_ajax(request):
+    if request.method == "POST":
+        task_id = request.POST.get("task_id")
+        status = request.POST.get("status")
+
+        task = Task.objects.get(id=task_id)
+        task.status = status
+        task.save()
+
+        return JsonResponse({"success": True})

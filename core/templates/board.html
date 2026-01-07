@@ -75,8 +75,11 @@
         <div class="column todo">
             <h3>To Do</h3>
             {% for task in todo %}
-                <div class="task">
-                    {{ task.task_name }}
+                <div class="task" data-id="{{ task.id }}">
+                    <p>{{ task.task_name }}</p>
+                    <button onclick="updateStatus({{ task.id }}, 'todo')">To Do</button>
+                    <button onclick="updateStatus({{ task.id }}, 'progress')">Progress</button>
+                    <button onclick="updateStatus({{ task.id }}, 'done')">Done</button>
                 </div>
             {% empty %}
                 <p>No tasks</p>
@@ -86,8 +89,11 @@
         <div class="column progress">
             <h3>In Progress</h3>
             {% for task in progress %}
-                <div class="task">
-                    {{ task.task_name }}
+                <div class="task" data-id="{{ task.id }}">
+                    <p>{{ task.task_name }}</p>
+                    <button onclick="updateStatus({{ task.id }}, 'todo')">To Do</button>
+                    <button onclick="updateStatus({{ task.id }}, 'progress')">Progress</button>
+                    <button onclick="updateStatus({{ task.id }}, 'done')">Done</button>
                 </div>
             {% empty %}
                 <p>No tasks</p>
@@ -97,8 +103,11 @@
         <div class="column done">
             <h3>Done</h3>
             {% for task in done %}
-                <div class="task">
-                    {{ task.task_name }}
+                <div class="task" data-id="{{ task.id }}">
+                    <p>{{ task.task_name }}</p>
+                    <button onclick="updateStatus({{ task.id }}, 'todo')">To Do</button>
+                    <button onclick="updateStatus({{ task.id }}, 'progress')">Progress</button>
+                    <button onclick="updateStatus({{ task.id }}, 'done')">Done</button>
                 </div>
             {% empty %}
                 <p>No tasks</p>
@@ -108,4 +117,23 @@
     </div>
 
 </body>
+
+<script>
+function updateStatus(taskId, status) {
+    fetch("{% url 'update_status_ajax' %}", {
+        method: "POST",
+        headers: {
+            "X-CSRFToken": "{{ csrf_token }}",
+            "Content-Type": "application/x-www-form-urlencoded"
+        },
+        body: `task_id=${taskId}&status=${status}`
+    })
+    .then(res => res.json())
+    .then(data => {
+        if (data.success) {
+            location.reload(); // atau pindahkan DOM element
+        }
+    });
+}
+</script>
 </html>

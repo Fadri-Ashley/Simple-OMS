@@ -7,4 +7,5 @@ urlpatterns = [
     path('login/', views.login_page, name='login'),
     path('logout/', views.logout_view, name='logout'),
     path('register/', views.register_page, name='register'),
+    path('update-status/', views.update_status_ajax, name='update_status_ajax'),
 ]
