@@ -1,22 +1,89 @@
-<!-- your_app/templates/your_app/user_list.html -->
 <!DOCTYPE html>
 <html>
-<head>
+  <head>
     <title>User List</title>
-</head>
-<body>
-    <a href="{% url 'dashboard' %}" class="back">Dashboard</a>
-    <h1>Crew List</h1>
-    <ul>
-        <!-- Loop through the users passed from the view -->
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
+
+      body {
+        background-color: #f4f6f8;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      /* Sidebar */
+      .sidebar {
+        width: 220px;
+        background-color: #1f2933;
+        color: #fff;
+        padding: 20px;
+      }
+
+      .sidebar h2 {
+        margin-bottom: 30px;
+        font-size: 20px;
+        text-align: center;
+      }
+
+      .sidebar a {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
+
+      .sidebar a:hover {
+        background-color: #374151;
+      }
+
+      /* Main content */
+      .main {
+        flex: 1;
+        padding: 30px;
+      }
+
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
+
+      .header h1 {
+        font-size: 24px;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Simple OMS</h2>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'board' %}">Kanban Board</a>
+      <a href="{% url 'crew' %}">Crew List</a>
+      <!-- fitur baru tinggal nambah link -->
+    </div>
+    <div class="main">
+      <div class="header">
+        <h1>Crew List</h1>
+      </div>
+
+      <ul>
         {% for user in users %}
-            <li>
-                <!-- Display user details -->
-                {{ user.get_full_name|default:user.username }} ({{ user.email }})
-            </li>
+        <li>
+          {{ user.get_full_name|default:user.username }} ({{ user.email }})
+        </li>
         {% empty %}
-            <li>No users found.</li>
+        <li>No users found.</li>
         {% endfor %}
-    </ul>
-</body>
+      </ul>
+    </div>
+  </body>
 </html>

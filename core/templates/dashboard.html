@@ -105,7 +105,7 @@
 
         <div class="card">
             <h3>Welcome 👋</h3>
-            <p>Hi, <strong>{{ user.email }}</strong></p>
+            <p>Hi, <strong>{{ user.get_full_name|default:user.username }}</strong></p>
             <p>Selamat datang di Simple Organization Management System.</p>
         </div>
     </div>

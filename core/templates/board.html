@@ -1,213 +1,273 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
+  <head>
+    <meta charset="UTF-8" />
     <title>Kanban Board | Simple OMS</title>
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: Arial, sans-serif;
-        }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Arial, sans-serif;
+      }
 
-        body {
-            background-color: #f4f6f8;
-            padding: 30px;
-        }
+      body {
+        display: flex;
+        background-color: #f4f6f8;
+        min-height: 100vh;
+      }
 
-        h1 {
-            margin-bottom: 20px;
-        }
+      .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+      }
 
-        .board {
-            display: flex;
-            gap: 20px;
-        }
+      .header h1 {
+        font-size: 24px;
+      }
 
-        .column {
-            background-color: #e5e7eb;
-            padding: 15px;
-            border-radius: 8px;
-            width: 100%;
-            min-height: 400px;
-        }
+      .board {
+        display: flex;
+        gap: 20px;
+      }
 
-        .column h3 {
-            margin-bottom: 15px;
-            text-align: center;
-        }
+      .column {
+        background-color: #e5e7eb;
+        padding: 15px;
+        border-radius: 8px;
+        width: 100%;
+        min-height: 400px;
+      }
 
-        .task {
-            background-color: white;
-            padding: 10px;
-            border-radius: 6px;
-            margin-bottom: 10px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-            cursor: pointer;
-        }
+      .column h3 {
+        margin-bottom: 15px;
+        text-align: center;
+      }
 
-        .task:hover {
-            background-color: #f9fafb;
-        }
+      .task {
+        background-color: white;
+        padding: 10px;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        cursor: pointer;
+      }
 
-        /* Optional color accent */
-        .todo { border-top: 4px solid #3b82f6; }
-        .progress { border-top: 4px solid #f59e0b; }
-        .done { border-top: 4px solid #10b981; }
+      .task:hover {
+        background-color: #f9fafb;
+      }
 
-        .back {
-            display: inline-block;
-            margin-bottom: 20px;
-            text-decoration: none;
-            color: #2563eb;
-        }
+      /* Main content */
+      .main {
+        flex: 1;
+        padding: 30px;
+      }
 
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0,0,0,0.4);
-        }
+      /* Sidebar */
+      .sidebar {
+        width: 220px;
+        background-color: #1f2933;
+        color: #fff;
+        padding: 20px;
+      }
 
-        .modal-content {
-            background: #fff;
-            padding: 20px;
-            border-radius: 8px;
-            width: 400px;
-            margin: 15% auto;
-            position: relative;
-        }
+      .sidebar h2 {
+        margin-bottom: 30px;
+        font-size: 20px;
+        text-align: center;
+      }
 
-        .close {
-            position: absolute;
-            right: 12px;
-            top: 8px;
-            font-size: 22px;
-            cursor: pointer;
-        }
+      .sidebar a {
+        display: block;
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 15px;
+        margin-bottom: 10px;
+        border-radius: 5px;
+      }
 
+      .sidebar a:hover {
+        background-color: #374151;
+      }
+
+      /* Optional color accent */
+      .todo {
+        border-top: 4px solid #3b82f6;
+      }
+      .progress {
+        border-top: 4px solid #f59e0b;
+      }
+      .done {
+        border-top: 4px solid #10b981;
+      }
+
+      .back {
+        display: inline-block;
+        margin-bottom: 20px;
+        text-decoration: none;
+        color: #2563eb;
+      }
+
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 1000;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.4);
+      }
+
+      .modal-content {
+        background: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        width: 400px;
+        margin: 15% auto;
+        position: relative;
+      }
+
+      .close {
+        position: absolute;
+        right: 12px;
+        top: 8px;
+        font-size: 22px;
+        cursor: pointer;
+      }
     </style>
-</head>
-<body>
+  </head>
+  <body>
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <h2>Simple OMS</h2>
+      <a href="{% url 'dashboard' %}">Dashboard</a>
+      <a href="{% url 'board' %}">Kanban Board</a>
+      <a href="{% url 'crew' %}">Crew List</a>
+      <!-- fitur baru tinggal nambah link -->
+    </div>
 
-    <a href="{% url 'dashboard' %}" class="back">Dashboard</a>
-
-    <h1>Simple Kanban Board</h1>
-
-    <div class="board">
-
+    <div class="main">
+      <div class="header">
+        <h1>Simple Kanban Board</h1>
+      </div>
+      <div class="board">
         <div class="column todo">
-            <h3>To Do</h3>
-            {% for task in todo %}
-                <div class="task" 
-                    data-id="{{ task.id }}"
-                    data-name="{{ task.task_name }}"
-                    data-desc="{{ task.task_desc|escape }}">
-                    <p>{{ task.task_name }}</p>
-                </div>
-            {% empty %}
-                <p>No tasks</p>
-            {% endfor %}
+          <h3>To Do</h3>
+          {% for task in todo %}
+          <div
+            class="task"
+            data-id="{{ task.id }}"
+            data-name="{{ task.task_name }}"
+            data-desc="{{ task.task_desc|escape }}"
+          >
+            <p>{{ task.task_name }}</p>
+          </div>
+          {% empty %}
+          <p>No tasks</p>
+          {% endfor %}
         </div>
 
         <div class="column progress">
-            <h3>In Progress</h3>
-            {% for task in progress %}
-                <div class="task" 
-                    data-id="{{ task.id }}"
-                    data-name="{{ task.task_name }}"
-                    data-desc="{{ task.task_desc|escape }}">
-                    <p>{{ task.task_name }}</p>
-                </div>
-            {% empty %}
-                <p>No tasks</p>
-            {% endfor %}
+          <h3>In Progress</h3>
+          {% for task in progress %}
+          <div
+            class="task"
+            data-id="{{ task.id }}"
+            data-name="{{ task.task_name }}"
+            data-desc="{{ task.task_desc|escape }}"
+          >
+            <p>{{ task.task_name }}</p>
+          </div>
+          {% empty %}
+          <p>No tasks</p>
+          {% endfor %}
         </div>
 
         <div class="column done">
-            <h3>Done</h3>
-            {% for task in done %}
-                <div class="task" 
-                    data-id="{{ task.id }}"
-                    data-name="{{ task.task_name }}"
-                    data-desc="{{ task.task_desc|escape }}">
-                    <p>{{ task.task_name }}</p>
-                </div>
-            {% empty %}
-                <p>No tasks</p>
-            {% endfor %}
+          <h3>Done</h3>
+          {% for task in done %}
+          <div
+            class="task"
+            data-id="{{ task.id }}"
+            data-name="{{ task.task_name }}"
+            data-desc="{{ task.task_desc|escape }}"
+          >
+            <p>{{ task.task_name }}</p>
+          </div>
+          {% empty %}
+          <p>No tasks</p>
+          {% endfor %}
         </div>
+      </div>
 
-    </div>
+      <div id="taskModal" class="modal">
+        <div class="modal-content">
+          <span class="close">&times;</span>
+          <h2 id="modalTitle"></h2>
+          <p id="modalDesc"></p>
+          <form id="statusForm">
+            <input type="hidden" id="taskId" />
 
-    <div id="taskModal" class="modal">
-        <div class="modal-content" >
-            <span class="close">&times;</span>
-            <h2 id="modalTitle"></h2>
-            <p id="modalDesc"></p>
-            <form id="statusForm">
-                <input type="hidden" id="taskId">
+            <label>Status</label>
+            <select id="taskStatus">
+              <option value="todo" selected>To Do</option>
+              <option value="progress">In Progress</option>
+              <option value="done">Done</option>
+            </select>
 
-                <label>Status</label>
-                <select id="taskStatus">
-                    <option value="todo">To Do</option>
-                    <option value="progress">In Progress</option>
-                    <option value="done">Done</option>
-                </select>
-
-                <button type="submit">Update Status</button>
-            </form>
+            <button type="submit">Update Status</button>
+          </form>
         </div>
+      </div>
     </div>
+  </body>
 
-</body>
+  <script>
+    const modal = document.getElementById("taskModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const taskIdInput = document.getElementById("taskId");
+    const statusSelect = document.getElementById("taskStatus");
+    const closeBtn = document.querySelector(".close");
 
-<script>
-const modal = document.getElementById("taskModal");
-const modalTitle = document.getElementById("modalTitle");
-const modalDesc = document.getElementById("modalDesc");
-const taskIdInput = document.getElementById("taskId");
-const statusSelect = document.getElementById("taskStatus");
-const closeBtn = document.querySelector(".close");
-
-document.querySelectorAll(".task").forEach(task => {
-    task.addEventListener("click", () => {
+    document.querySelectorAll(".task").forEach((task) => {
+      task.addEventListener("click", () => {
         modalTitle.innerText = task.dataset.name;
         modalDesc.innerText = task.dataset.desc || "No description";
         taskIdInput.value = task.dataset.id;
         statusSelect.value = task.dataset.status;
         modal.style.display = "block";
+      });
     });
-});
 
-closeBtn.onclick = () => modal.style.display = "none";
+    closeBtn.onclick = () => (modal.style.display = "none");
 
-document.getElementById("statusForm").addEventListener("submit", function(e) {
-    e.preventDefault();
+    document
+      .getElementById("statusForm")
+      .addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    fetch("{% url 'update_status_ajax' %}", {
-        method: "POST",
-        headers: {
+        fetch("{% url 'update_status_ajax' %}", {
+          method: "POST",
+          headers: {
             "X-CSRFToken": "{{ csrf_token }}",
-            "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: `task_id=${taskIdInput.value}&status=${statusSelect.value}`
-    })
-    .then(res => res.json())
-    .then(data => {
-        if (data.success) {
-            location.reload();
-        }
-    });
-});
+            "Content-Type": "application/x-www-form-urlencoded",
+          },
+          body: `task_id=${taskIdInput.value}&status=${statusSelect.value}`,
+        })
+          .then((res) => res.json())
+          .then((data) => {
+            if (data.success) {
+              location.reload();
+            }
+          });
+      });
 
-window.onclick = (e) => {
-    if (e.target === modal) modal.style.display = "none";
-};
-</script>
+    window.onclick = (e) => {
+      if (e.target === modal) modal.style.display = "none";
+    };
+  </script>
 </html>
