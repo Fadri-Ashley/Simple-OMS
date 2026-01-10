@@ -9,4 +9,5 @@ urlpatterns = [
     path('register/', views.register_page, name='register'),
     path('update-status/', views.update_status_ajax, name='update_status_ajax'),
     path('crew/', views.user_list_view, name='crew'),
+    path('test-throttle/', views.TestThrottleView.as_view())
 ]

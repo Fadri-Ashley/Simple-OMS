@@ -10,6 +10,9 @@ from django.http import JsonResponse
 from django.contrib.auth import get_user_model
 from django.core.mail import send_mail
 from django.conf import settings 
+from rest_framework.views import APIView
+from rest_framework.response import Response
+from rest_framework.permissions import AllowAny
 
 # Auth
 
@@ -117,3 +120,12 @@ def user_list_view(request):
         'users': users
     }
     return render(request, 'crew_list.html', context)
+
+# Throttle
+class TestThrottleView(APIView):
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        return Response({
+            "message": "Request berhasil"
+        })
