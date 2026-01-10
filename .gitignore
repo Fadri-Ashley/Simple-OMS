@@ -17,7 +17,7 @@ env/
 db.sqlite
 media/ # User-uploaded media files (optional, depends on deployment strategy)
 static/ # Generated static files (optional, can be generated on deployment)
-.env # Environment variables file (contains sensitive info/secrets)
+.env 
 
 # IDE-specific
 .idea/ # PyCharm

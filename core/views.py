@@ -8,6 +8,8 @@ from django.template import loader
 from .models import Task 
 from django.http import JsonResponse
 from django.contrib.auth import get_user_model
+from django.core.mail import send_mail
+from django.conf import settings 
 
 # Auth
 
@@ -56,14 +58,23 @@ def register_page(request):
             username=username,
             email=email,
         )
-
         user.set_password(password)
         user.save()
 
-        messages.info(request, "Account created successfully!")
+        # Send to email
+        send_mail(
+            subject='Welcome to Simple OMS',
+            message=f'Hi {first_name},\n\nYour account are created successfully.\n\nThank You!',
+            from_email=settings.DEFAULT_FROM_EMAIL,
+            recipient_list=[email],
+            fail_silently=False,
+        )
+
+        messages.success(request, "Account created successfully! Check your email.")
         return redirect('login')
 
     return render(request, 'register.html')
+
 
 # Dashboard
 @login_required
