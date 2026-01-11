@@ -15,9 +15,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
 from rest_framework.generics import ListCreateAPIView
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.throttling import UserRateThrottle
-from rest_framework.throttling import AnonRateThrottle
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
 
@@ -132,6 +131,7 @@ def user_list_view(request):
     return render(request, 'crew_list.html', context)
 
 # Throttle
+# Use Postman for test
 class TestThrottleView(APIView):
     permission_classes = [AllowAny]
     throttle_classes = [AnonRateThrottle]
@@ -145,7 +145,7 @@ class TestThrottleView(APIView):
 class TaskListAPI(ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAdminUser]
     throttle_classes = [UserRateThrottle]
 
     # FILTERING
