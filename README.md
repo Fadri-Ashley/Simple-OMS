@@ -1,19 +1,19 @@
 # Simple Organization Management System
 ## To Do List Functional App
 - [x] Dashboard
-- [ ] Roles 
+- [x] Roles 
 - [x] Kanban
 - [x] Crew list
 
 ## To Do List Assignment
-- [ ] Functional app
-- [ ] Database design
-- [ ] API
-- [ ] Auth
-- [ ] Throttling
-- [ ] Pagination
-- [ ] Filtering
-- [ ] Sorting
-- [ ] Unit testing
+- [x] Functional app
+- [x] Database design
+- [x] API
+- [x] Auth
+- [x] Throttling
+- [x] Pagination
+- [x] Filtering
+- [x] Sorting
+- [x] Unit testing
 - [ ] Docs
 - [ ] Hosting
