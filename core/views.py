@@ -19,6 +19,7 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.throttling import UserRateThrottle, AnonRateThrottle
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import OrderingFilter, SearchFilter
+from rest_framework.pagination import LimitOffsetPagination
 
 from .models import Task
 from .serializers import TaskSerializer
@@ -146,7 +147,7 @@ class TaskListAPI(ListCreateAPIView):
     queryset = Task.objects.all()
     serializer_class = TaskSerializer
     permission_classes = [IsAdminUser]
-    throttle_classes = [UserRateThrottle]
+    pagination_class = LimitOffsetPagination
 
     # FILTERING
     filter_backends = [
