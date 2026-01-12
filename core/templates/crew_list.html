@@ -59,6 +59,21 @@
       .header h1 {
         font-size: 24px;
       }
+
+      table {
+        border-collapse: collapse;
+        background: #fff;
+      }
+
+      th,
+      td {
+        border: 1px solid #d1d5db;
+        text-align: left;
+      }
+
+      th {
+        background-color: #f3f4f6;
+      }
     </style>
   </head>
   <body>
@@ -74,15 +89,36 @@
         <h1>Crew List</h1>
       </div>
 
-      <ul>
-        {% for user in users %}
-        <li>
-          {{ user.get_full_name|default:user.username }} ({{ user.email }})
-        </li>
-        {% empty %}
-        <li>No users found.</li>
-        {% endfor %}
-      </ul>
+      <table border="1" cellpadding="10" cellspacing="0" width="100%">
+        <thead style="background: #e5e7eb">
+          <tr>
+            <th>No</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>To Do</th>
+            <th>In Progress</th>
+            <th>Done</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ user.first_name|default:"-" }}</td>
+            <td>{{ user.last_name|default:"-" }}</td>
+            <td>{{ user.email }}</td>
+            <td align="center">{{ user.todo_count }}</td>
+            <td align="center">{{ user.progress_count }}</td>
+            <td align="center">{{ user.done_count }}</td>
+          </tr>
+          {% empty %}
+          <tr>
+            <td colspan="7" align="center">No users found</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
     </div>
   </body>
 </html>

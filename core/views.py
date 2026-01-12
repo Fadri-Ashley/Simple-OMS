@@ -1,8 +1,9 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
-from django.contrib.auth import authenticate, login, logout 
+from django.contrib.auth import authenticate, login, logout, get_user_model
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User 
+from django.db.models import Count, Q 
 from django.http import HttpResponse
 from django.template import loader 
 from .models import Task 
@@ -122,16 +123,26 @@ def update_status_ajax(request):
     
 @login_required
 def user_list_view(request):
-    # Retrieve all user objects from the database
     User = get_user_model()
-    users = User.objects.all().order_by('last_name', 'first_name') # Optional: order the list
 
-    # Pass the user list to the template context
-    context = {
+    users = User.objects.annotate(
+        todo_count=Count(
+            'updated_tasks',
+            filter=Q(updated_tasks__status='todo')
+        ),
+        progress_count=Count(
+            'updated_tasks',
+            filter=Q(updated_tasks__status='progress')
+        ),
+        done_count=Count(
+            'updated_tasks',
+            filter=Q(updated_tasks__status='done')
+        ),
+    ).order_by('last_name', 'first_name')
+
+    return render(request, 'crew_list.html', {
         'users': users
-    }
-    return render(request, 'crew_list.html', context)
-
+    })
 # Throttle
 # Use Postman for test
 class TestThrottleView(APIView):
