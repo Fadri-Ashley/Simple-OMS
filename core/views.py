@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect 
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout 
 from django.contrib.auth.decorators import login_required
@@ -113,8 +113,9 @@ def update_status_ajax(request):
         task_id = request.POST.get("task_id")
         status = request.POST.get("status")
 
-        task = Task.objects.get(id=task_id)
+        task = get_object_or_404(Task, id=task_id)
         task.status = status
+        task.updated_by = request.user   
         task.save()
 
         return JsonResponse({"success": True})

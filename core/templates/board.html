@@ -162,6 +162,7 @@
             data-id="{{ task.id }}"
             data-name="{{ task.task_name }}"
             data-desc="{{ task.task_desc|escape }}"
+            data-updatedby="{{ task.updated_by.username|default:'-' }}"
           >
             <p>{{ task.task_name }}</p>
           </div>
@@ -178,6 +179,7 @@
             data-id="{{ task.id }}"
             data-name="{{ task.task_name }}"
             data-desc="{{ task.task_desc|escape }}"
+            data-updatedby="{{ task.updated_by.username|default:'-' }}"
           >
             <p>{{ task.task_name }}</p>
           </div>
@@ -194,6 +196,7 @@
             data-id="{{ task.id }}"
             data-name="{{ task.task_name }}"
             data-desc="{{ task.task_desc|escape }}"
+            data-updatedby="{{ task.updated_by.username|default:'-' }}"
           >
             <p>{{ task.task_name }}</p>
           </div>
@@ -207,7 +210,14 @@
         <div class="modal-content">
           <span class="close">&times;</span>
           <h2 id="modalTitle"></h2>
+          <br>
           <p id="modalDesc"></p>
+          <br>
+          <p>
+            Last Updated By:
+            <span id="modalUpdatedBy">-</span>
+          </p>
+          <br>
           <form id="statusForm">
             <input type="hidden" id="taskId" />
 
@@ -232,11 +242,13 @@
     const taskIdInput = document.getElementById("taskId");
     const statusSelect = document.getElementById("taskStatus");
     const closeBtn = document.querySelector(".close");
+    const modalUpdatedBy = document.getElementById("modalUpdatedBy");
 
     document.querySelectorAll(".task").forEach((task) => {
       task.addEventListener("click", () => {
         modalTitle.innerText = task.dataset.name;
         modalDesc.innerText = task.dataset.desc || "No description";
+        modalUpdatedBy.innerText = task.dataset.updatedby;
         taskIdInput.value = task.dataset.id;
         statusSelect.value = task.dataset.status;
         modal.style.display = "block";
